@@ -10,6 +10,7 @@ fn main() {
     type_inferred_array();
     typed_array();
     repeated_item_array();
+    expression();
     invalid_index::invalid_array();
 }
 
@@ -48,4 +49,12 @@ fn typed_array() {
 fn repeated_item_array() {
     let a = [3; 5];
     println!("{}", a[4]);
+}
+
+fn expression() {
+    let y = {
+        let x = 3;
+        x + 1
+    };
+    println!("The value of y is: {y}");
 }
