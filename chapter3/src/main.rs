@@ -20,6 +20,7 @@ fn main() {
     while_for_loop();
     for_in_loop();
     for_in_loop_shorthand();
+    string_mutation();
     invalid_index::invalid_array();
 }
 
@@ -164,4 +165,10 @@ fn for_in_loop_shorthand() {
         println!("{number}!");
     }
     println!("LIFTOFF!!!");
+}
+
+fn string_mutation() {
+    let mut s = String::from("hello");
+    s.push_str(", world!"); // push_str() appends a literal to a String
+    println!("{s}"); // this will print `hello, world!`
 }
