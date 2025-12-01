@@ -6,6 +6,7 @@ fn main() {
     ownership_take_examples();
     ownership_give_example();
     returning_ownership_of_parameters();
+    borrowing();
 }
 
 fn string_mutation() {
@@ -106,4 +107,38 @@ fn calculate_length(s: String) -> (String, usize) {
     let length = s.len(); // len() returns the length of a String
 
     (s, length)
+}
+
+fn borrowing() {
+    let s1 = String::from("hello");
+    let len = borrowing_calculate_length(&s1);
+    println!("The length of '{s1}' is {len}.");
+
+    let mut s2 = String::from("hello");
+    change(&mut s2);
+
+    let s3 = String::from("hello");
+
+    let r1 = &s3;
+    let r2 = &s3;
+
+    println!("{r1}, {r2}");
+
+    let mut s4 = String::from("hello");
+
+    {
+        let r4 = &mut s4;
+        println!("{r4}");
+    } // r1 goes out of scope here, so we can make a new reference with no problems.
+
+    let r5 = &mut s4;
+    println!("{r5}");
+}
+
+fn borrowing_calculate_length(s: &String) -> usize {
+    s.len()
+}
+
+fn change(some_string: &mut String) {
+    some_string.push_str(", world");
 }
