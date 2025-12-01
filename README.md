@@ -1,0 +1,2 @@
+# RustLearning
+Training in Rust
