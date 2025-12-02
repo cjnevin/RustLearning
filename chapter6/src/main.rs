@@ -52,6 +52,7 @@ fn main() {
     ip_address();
     message_call();
     match_control_flow();
+    matching_with_option();
 }
 
 fn ip_address() {
@@ -81,4 +82,23 @@ fn match_control_flow() {
     println!("{}", value_in_cents(Coin::Nickel));
     println!("{}", value_in_cents(Coin::Dime));
     println!("{}", value_in_cents(Coin::Quarter(UsState::Alaska)));
+}
+
+fn plus_one(x: Option<i32>) -> Option<i32> {
+    match x {
+        None => {
+            println!("None");
+            None
+        }
+        Some(i) => {
+            println!("Plus one {}", i + 1);
+            Some(i + 1)
+        }
+    }
+}
+
+fn matching_with_option() {
+    let five = Some(5);
+    let _six = plus_one(five);
+    let _none = plus_one(None);
 }
