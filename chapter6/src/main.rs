@@ -53,6 +53,8 @@ fn main() {
     message_call();
     match_control_flow();
     matching_with_option();
+    config_match();
+    non_quarter_coins();
 }
 
 fn ip_address() {
@@ -101,4 +103,69 @@ fn matching_with_option() {
     let five = Some(5);
     let _six = plus_one(five);
     let _none = plus_one(None);
+}
+
+fn config_match() {
+    let config_max = Some(3u8);
+    match config_max {
+        Some(max) => println!("The maximum is configured to be {max}"),
+        _ => (),
+    }
+
+    if let Some(max) = config_max {
+        println!("The maximum is configured to be {max}");
+    }
+}
+
+impl UsState {
+    fn existed_in(&self, year: u16) -> bool {
+        match self {
+            UsState::Alabama => year >= 1819,
+            UsState::Alaska => year >= 1959,
+            // -- snip --
+        }
+    }
+}
+
+fn describe_state_quarter(coin: Coin) -> Option<String> {
+    let Coin::Quarter(state) = coin else {
+        return None;
+    };
+
+    if state.existed_in(1900) {
+        Some(format!("{state:?} is pretty old, for America!"))
+    } else {
+        Some(format!("{state:?} is relatively new."))
+    }
+}
+
+impl Coin {
+    fn is_non_quarter(&self) -> bool {
+        if let Coin::Quarter(_) = self {
+            return false;
+        } else {
+            return true;
+        }
+    }
+}
+
+fn non_quarter_coins() {
+    let coins = [
+        Coin::Penny,
+        Coin::Nickel,
+        Coin::Dime,
+        Coin::Quarter(UsState::Alabama),
+        Coin::Quarter(UsState::Alaska),
+    ];
+    let mut count = 0;
+    for coin in coins {
+        if coin.is_non_quarter() {
+            count += 1;
+        } else {
+            if let Some(message) = describe_state_quarter(coin) {
+                println!("{message}");
+            }
+        }
+    }
+    println!("Number of non-quarter coins: {}", count);
 }
