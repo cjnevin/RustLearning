@@ -1,8 +1,9 @@
-use std::collections::HashMap;
+use std::{collections::HashMap, io};
 
 fn main() {
     scores();
     count_words();
+    add_employees();
 }
 
 fn scores() -> HashMap<String, i32> {
@@ -40,4 +41,57 @@ fn count_words() {
     }
 
     println!("{map:?}");
+}
+
+fn add_employees() {
+    let mut department: HashMap<String, Vec<String>> = HashMap::new();
+
+    println!("Type 'add [name] to [department]' to start, type 'exit' to finish");
+
+    loop {
+        let mut line = String::new();
+        io::stdin()
+            .read_line(&mut line)
+            .expect("Failed to read line");
+        let line = line.trim();
+        if line.eq_ignore_ascii_case("exit") {
+            println!("Exiting employee entry.");
+            println!("Employees: {department:?}");
+            break;
+        }
+
+        if line.is_empty() {
+            println!("Empty input. Please try again.");
+            continue;
+        }
+
+        let mut words = line.split_whitespace();
+
+        let add = words.next();
+        if !add.map_or(false, |w| w.eq_ignore_ascii_case("add")) {
+            println!("Error: Invalid command. Expected 'Add'.");
+            continue;
+        };
+
+        let name = match words.next() {
+            Some(n) => n.to_string(),
+            None => {
+                println!("Error: Missing employee name.");
+                continue;
+            }
+        };
+
+        let to_word = words.next();
+        if !to_word.map_or(false, |w| w.eq_ignore_ascii_case("to")) {
+            println!("Error: Invalid command format. Expected 'to' after name.");
+            continue;
+        }
+
+        let department_name = words.collect::<Vec<&str>>().join(" ");
+
+        department
+            .entry(department_name)
+            .or_insert_with(Vec::new)
+            .push(name);
+    }
 }
