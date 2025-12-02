@@ -1,4 +1,4 @@
-use minigrep::search;
+use minigrep::{search, search_case_insensitive};
 use std::{env, error::Error, fs, process};
 
 fn main() {
@@ -21,7 +21,7 @@ fn main() {
 fn run(config: Config) -> Result<(), Box<dyn Error>> {
     let contents = fs::read_to_string(config.file_path)?;
 
-    for line in search(&config.query, &contents) {
+    for line in search_case_insensitive(&config.query, &contents) {
         println!("{line}");
     }
 
